@@ -2,19 +2,24 @@ name: Create Release
 
 on:
   push:
-    tags:
-      - "v*.*.*"
-      - "v*.*.*-beta"
+    branches:
+      - main
 
 jobs:
   create_release:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository with tags
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: Generate Release Notes
         id: generate_notes
@@ -22,17 +27,23 @@ jobs:
           chmod +x .github/scripts/generate_release_notes.sh
           .github/scripts/generate_release_notes.sh
 
+      - name: Upgrade Tag Version
+        id: upgrade_tag_version
+        run: |
+          chmod +x .github/scripts/upgrade_version.sh
+          .github/scripts/upgrade_version.sh beta
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ steps.generate_notes.outputs.notes }}
+          tag_name: ${{ steps.upgrade_tag_version.outputs.tag_name }}
+          release_name: Release ${{ steps.upgrade_tag_version.outputs.tag_name }}
+          body: ${{ env.RELEASE_NOTES }}
           draft: false
-          prerelease: ${{ contains(github.ref_name, '-beta') }}
+          prerelease: ${{ contains(steps.upgrade_tag_version.outputs.tag_name, '-beta') }}
 
       - name: Upload sys_hc.sh
         uses: actions/upload-release-asset@v1

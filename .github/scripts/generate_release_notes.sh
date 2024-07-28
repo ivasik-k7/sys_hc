@@ -8,8 +8,6 @@ if [ ! -d .git ]; then
     exit 1
 fi
 
-# git fetch --tags # debug purposed disabled
-
 LATEST_TAG=$(git describe --tags --abbrev=0)
 
 if [ -z "$LATEST_TAG" ]; then
@@ -29,12 +27,13 @@ fi
 RELEASE_NOTES="### Release Notes since $LATEST_TAG:\n\n"
 RELEASE_NOTES+="$(echo "$COMMITS" | sed 's/^/- /')"
 
-echo -e "$RELEASE_NOTES" >RELEASE_NOTES.md
+OUTPUT_FILE="RELEASE_NOTES.md"
 
+echo -e "$RELEASE_NOTES" >"$OUTPUT_FILE"
 echo -e "$RELEASE_NOTES"
 
 echo "Release notes generated successfully."
 
-echo "::set-output name=notes::$(cat RELEASE_NOTES.md)"
-
-exit 0
+echo "RELEASE_NOTES<<EOF" >>$GITHUB_ENV
+cat "$OUTPUT_FILE" >>$GITHUB_ENV
+echo "EOF" >>$GITHUB_ENV

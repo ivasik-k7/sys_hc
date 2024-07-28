@@ -11,8 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository with tags
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Generate Release Notes
+        id: generate_notes
+        run: |
+          chmod +x .github/scripts/generate_release_notes.sh
+          .github/scripts/generate_release_notes.sh
 
       - name: Create Release
         id: create_release
@@ -21,7 +29,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
           tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ steps.generate_notes.outputs.notes }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-beta') }}
 

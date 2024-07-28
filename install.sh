@@ -10,7 +10,7 @@ SYMLINK_NAME="monitor"
 
 if [ ! -f "$SCRIPT_NAME" ]; then
     echo "Downloading system monitor script..."
-    wget -q "$SCRIPT_URL" -O "$SCRIPT_NAME"
+    curl -s -o "$SCRIPT_NAME" "$SCRIPT_URL"
 fi
 
 chmod +x "$SCRIPT_NAME"

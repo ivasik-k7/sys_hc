@@ -37,29 +37,75 @@
 - **Network Information**:
   - **Network Interfaces**: Displays network interface details.
 
-## Installation
+## Single Use
 
-To install `sys_hc.sh`, you can use `curl` to download the script directly from this repository. Run the following command in your terminal:
+If you prefer not to install the script and just want to run it once, you can use the following command to download and run the script directly:
+
+```bash
+curl -s https://raw.githubusercontent.com/ivasik-k7/sys_hc/main/sys_hc.sh | bash
+```
+
+Alternatively, if you want to download the script first and then run it:
 
 ```bash
 curl -o sys_hc.sh https://raw.githubusercontent.com/ivasik-k7/sys_hc/main/sys_hc.sh
-```
-
-After downloading, make the script executable:
-
-```bash
 chmod +x sys_hc.sh
-```
-
-After that you can launch it by executing the command:
-
-```
 ./sys_hc.sh
 ```
 
-## Contribution
+## Installation
 
-Feel free to submit issues or pull requests if you have suggestions for improvements or bug fixes. Your contributions are welcome!
+To install `sys_hc.sh`, you can use `curl` to download the installation script directly from this repository. Follow the steps below:
+
+1. **Download and Run the Installation Script:**
+
+   ```bash
+   curl -s https://raw.githubusercontent.com/ivasik-k7/sys_hc/main/install.sh | bash
+   ```
+
+2. **Verify Installation:**
+   After running the installation script, you can use the `monitor` command to run the system monitor script from any location:
+   ```bash
+   monitor
+   ```
+
+## Uninstallation
+
+To uninstall `sys_hc.sh` and remove the `monitor` command, use the following steps:
+
+1. **Download and Run the Uninstallation Script:**
+
+   ```bash
+   curl -s https://raw.githubusercontent.com/ivasik-k7/sys_hc/main/uninstall.sh | bash
+   ```
+
+2. **Verify Uninstallation:**
+   Ensure the `monitor` command is no longer available:
+   ```bash
+   monitor
+   # Expected output: bash: monitor: command not found
+   ```
+
+## Additional Information
+
+### System Requirements
+
+- **Operating System**: This script is compatible with macOS and Linux distributions.
+- **Permissions**: Some commands may require elevated permissions (e.g., `sudo`) to access certain system details or manage services.
+- **Dependencies**: Ensure that the necessary tools (e.g., `curl`, `wget`, `df`, `top`, etc.) are installed on your system.
+
+### Troubleshooting
+
+- **Command Not Found**: If you encounter `command not found` errors, ensure the required tools are installed and available in your system's PATH.
+- **Service Checks**: For accurate service status checks, ensure the services (Docker, kubectl, Tomcat, AWS CLI, RabbitMQ) are installed and configured correctly on your system.
+
+### Contributing
+
+Feel free to submit issues or pull requests if you have suggestions for improvements or bug fixes. Your contributions are welcome! Here are some ways you can contribute:
+
+1. **Report Bugs**: If you find a bug, please report it by opening an issue.
+2. **Suggest Features**: If you have an idea for a new feature, we would love to hear about it.
+3. **Submit Pull Requests**: If you have made improvements to the script, submit a pull request with your changes.
 
 ## License
 
